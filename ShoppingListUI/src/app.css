@@ -1,0 +1,150 @@
+:root {
+    
+    
+    
+
+}
+
+* {
+    margin-top: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+
+
+}
+
+.rebeccapurple {
+    --theme: rebeccapurple;
+    --theme-lighter: rgb(163, 87, 238);
+    --theme-background: linear-gradient(45deg, #773ab5, #411d64);
+
+    --theme-lighter: color-mix(in srgb, var(--theme), white 30%);
+    --theme-darker: color-mix(in srgb, var(--theme), white 30%);
+
+    --theme-background: linear-gradient(45deg, #773ab5, #411d64);
+
+}
+
+.firebrick {
+    --theme: firebrick;
+    --theme-lighter: rgb(202, 73, 73);
+    --theme-background: linear-gradient(-45deg, firebrick 10%, #8d1919);
+}
+
+.darkslateblue {
+    --theme: DarkSlateBlue;
+    --theme-lighter: rgb(126, 115, 199);
+    --theme-background: linear-gradient(135deg, rgb(82 72 155) 10%, rgb(55 47 109));
+}
+
+.darkgreen {
+    --theme: DarkGreen;
+    --theme-lighter: rgb(84, 148, 84);
+    --theme-background: linear-gradient(-45deg, rgb(12, 124, 12) 10%, rgb(0, 77, 0));
+}
+
+
+h1 {
+    font-size: clamp(1rem, calc(1.2em + 3vw), 2.5rem);
+    margin-bottom: .5rem;
+}
+
+h1 + h2 {
+    font-size: clamp(.5rem, calc(.7em + 3vw), 1.5rem);
+    margin-bottom: 1.5rem;
+    color: var(--theme-lighter);
+}
+
+a.button, button {
+    display: block;
+    text-decoration: none;
+    background: var(--theme-background);
+    color: white;
+    border: solid 5px var(--theme-lighter);
+    border-radius: 0px 10px 0px 10px;    
+    padding: .6em 1em;
+    cursor: pointer;
+
+    transition: all .1s ease-out;
+
+    &:is(:hover, :focus) {
+        filter: brightness(.9);
+    }
+
+    &.secondary {
+        color: var(--theme);
+        border: 5px rgb(235, 235, 235) solid;
+        background: rgb(224, 224, 224);
+    }
+}
+
+button.flat {
+    all: revert;
+
+    cursor: pointer;
+    font-size: inherit;
+    border: 0;
+    background: 0;
+    font-size: 1rem;
+    padding: .6em;
+    i {
+        font-size: 1.05rem;
+    }
+}
+
+.button-drawer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#app {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+hr {
+    opacity: 50%;
+    margin: 1.5rem 0rem;
+}
+
+
+
+dialog {
+    margin-top: auto;
+    padding: 2rem;
+    border: 0;
+    
+    h3 {
+        margin-top: 0;
+    }
+}
+
+.mysuccess {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 1em;
+    i {
+        font-size: 2.5rem;
+        top: -2rem;
+        left: -1.7rem;
+    }
+
+    .notyf__wrapper {
+        gap: 1rem;
+    }
+}
+
+.small {
+    font-size: .8em;
+}

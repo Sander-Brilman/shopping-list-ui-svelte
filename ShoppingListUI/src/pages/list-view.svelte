@@ -78,6 +78,10 @@
 
 
     async function addAsItem(value:string) {
+        value = value.trim();
+        if (value.length == 0) {
+            return;
+        }
         await itemService.addNewItem(listId, value);
         searchValue = "";
         rerenderVisibleLists();

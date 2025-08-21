@@ -1,0 +1,95 @@
+
+
+- name: "create {{ APP_USER }} user" 
+  hosts: all
+  become: true
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: create {{ APP_USER }} group
+      group:
+        name: "{{ APP_USER }}"
+        state: present
+
+    - name: create {{ APP_USER }} user
+      user:
+        name: "{{ APP_USER }}"  
+        create_home: true
+        groups: "{{ APP_USER }}"
+        state: present
+        shell: /usr/sbin/nologin
+        password: '!'
+
+    - name: "set permissions of /home/{{ APP_USER }}" 
+      file:
+        path: "/home/{{ APP_USER }}"
+        state: directory
+        owner: "{{ APP_USER }}"
+        group: restic
+        mode: 0650
+
+- name: compile app locally
+  hosts: localhost
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: template .env file for production
+      template: 
+        src: .env.production.j2
+        dest: ../../src/.env.production
+
+    - name: build app 
+      command: npm run build
+      args:
+        chdir: ../../src/
+
+    - name: cleaning up .env file
+      file: 
+        path: ../../.env.production
+        state: absent
+
+
+- name: copy over app
+  hosts: all
+  become: true
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: "copy over app to /home/{{ APP_USER }}"
+      copy:
+        src: ../../src/dist/
+        dest: "/home/{{ APP_USER }}/"
+        owner: "{{ APP_USER }}"
+        group: restic
+        mode: 0650
+
+- name: setup file server & reverse proxy
+  hosts: all
+  become: true
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: template caddyfile
+      template:
+        src: caddyfile.j2
+        dest: "/etc/caddy/sites/{{ APP_USER }}.caddyfile"
+        owner: caddy
+        group: restic
+        mode: 0640
+
+    - name: restart caddy
+      command: sudo caddy reload --config /etc/caddy/Caddyfile
+
+- name: setup application backup
+  hosts: all
+  become: true
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: template backup locations
+      template:
+        src: backup-locations.txt.j2
+        dest: "/home/restic/backup-locations/{{ APP_USER }}.txt"
+        owner: restic
+        group: restic
+        mode: 0640

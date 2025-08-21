@@ -1,0 +1,5 @@
+APP_DOMAIN_NAME: ui.example.com
+APP_PORT: 8000
+APP_USER: shopping_list_ui
+
+API_URL: https://api.example.com # <- make sure it has no trailing slash

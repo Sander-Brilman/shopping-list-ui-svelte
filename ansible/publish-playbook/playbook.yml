@@ -20,14 +20,6 @@
         shell: /usr/sbin/nologin
         password: '!'
 
-    - name: "set permissions of /home/{{ APP_USER }}" 
-      file:
-        path: "/home/{{ APP_USER }}"
-        state: directory
-        owner: "{{ APP_USER }}"
-        group: restic
-        mode: 0650
-
 - name: compile app locally
   hosts: localhost
   vars_files:
@@ -61,9 +53,10 @@
         dest: "/home/{{ APP_USER }}/"
         owner: "{{ APP_USER }}"
         group: restic
-        mode: 0650
+        mode: u=rx,g=rx,o=rx # since it is static html files we can allow anyone to read it, thats fine
 
 - name: setup file server & reverse proxy
+  tags: caddy
   hosts: all
   become: true
   vars_files:
@@ -75,7 +68,7 @@
         dest: "/etc/caddy/sites/{{ APP_USER }}.caddyfile"
         owner: caddy
         group: restic
-        mode: 0640
+        mode: u=r,g=r,o=
 
     - name: restart caddy
       command: sudo caddy reload --config /etc/caddy/Caddyfile
@@ -92,4 +85,4 @@
         dest: "/home/restic/backup-locations/{{ APP_USER }}.txt"
         owner: restic
         group: restic
-        mode: 0640
+        mode: u=r,g=r,o=

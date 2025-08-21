@@ -51,9 +51,9 @@
       copy:
         src: ../../src/dist/
         dest: "/home/{{ APP_USER }}/"
-        owner: "{{ APP_USER }}"
+        owner: caddy
         group: restic
-        mode: u=rx,g=rx,o=rx # since it is static html files we can allow anyone to read it, thats fine
+        mode: u=rx,g=rx,o=
 
 - name: setup file server & reverse proxy
   tags: caddy
